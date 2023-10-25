@@ -5,24 +5,10 @@
 
 Hindsight Experience Replay (HER) is a reinforcement learning technique that makes use of failed experiences to learn how to achieve goals. It does this by storing additional transitions in the replay buffer where the goal is replaced with the achieved state. This allows the agent to learn from a hindsight perspective, as if it had intended to reach the achieved state from the beginning.
 
-## Implementation
---------------
 
-This repository contains a Python implementation of HER using PyTorch. The main class is `HindsightExperienceReplay`, which represents a replay buffer that stores transitions and allows for sampling mini-batches of transitions.
+# Install
+`pip install hindsight-replay`
 
-The `HindsightExperienceReplay` class takes the following arguments:
-
--   `state_dim`: The dimension of the state space.
--   `action_dim`: The dimension of the action space.
--   `buffer_size`: The maximum size of the replay buffer.
--   `batch_size`: The size of the mini-batches to sample.
--   `goal_sampling_strategy`: A function that takes a tensor of goals and returns a tensor of goals. This function is used to dynamically sample goals for replay.
-
-The `HindsightExperienceReplay` class has the following methods:
-
--   `store_transition(state, action, reward, next_state, done, goal)`: Stores a transition and an additional transition where the goal is replaced with the achieved state in the replay buffer.
--   `sample()`: Samples a mini-batch of transitions from the replay buffer and applies the goal sampling strategy to the goals.
--   `__len__()`: Returns the current size of the replay buffer.
 
 ## Usage
 -----
@@ -30,6 +16,8 @@ The `HindsightExperienceReplay` class has the following methods:
 Here is an example of how to use the `HindsightExperienceReplay` class:
 
 ```python
+from hindsight import HindsightExperienceReplay
+
 # Define a goal sampling strategy
 def goal_sampling_strategy(goals):
     noise = torch.randn_like(goals) * 0.1
@@ -58,6 +46,26 @@ sampled_transitions = her.sample()
 if sampled_transitions is not None:
     states, actions, rewards, next_states, dones, goals = sampled_transitions
 ```
+
+
+## Implementation
+--------------
+
+This repository contains a Python implementation of HER using PyTorch. The main class is `HindsightExperienceReplay`, which represents a replay buffer that stores transitions and allows for sampling mini-batches of transitions.
+
+The `HindsightExperienceReplay` class takes the following arguments:
+
+-   `state_dim`: The dimension of the state space.
+-   `action_dim`: The dimension of the action space.
+-   `buffer_size`: The maximum size of the replay buffer.
+-   `batch_size`: The size of the mini-batches to sample.
+-   `goal_sampling_strategy`: A function that takes a tensor of goals and returns a tensor of goals. This function is used to dynamically sample goals for replay.
+
+The `HindsightExperienceReplay` class has the following methods:
+
+-   `store_transition(state, action, reward, next_state, done, goal)`: Stores a transition and an additional transition where the goal is replaced with the achieved state in the replay buffer.
+-   `sample()`: Samples a mini-batch of transitions from the replay buffer and applies the goal sampling strategy to the goals.
+-   `__len__()`: Returns the current size of the replay buffer.
 
 
 In this example, we first define a goal sampling strategy function and the dimensions of the state and action spaces, the buffer size, and the batch size. We then create an instance of the `HindsightExperienceReplay` class, store a transition, and sample a mini-batch of transitions. The states, actions, rewards, next states, done flags, and goals are returned as separate tensors.
